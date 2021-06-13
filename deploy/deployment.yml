@@ -17,6 +17,11 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "auth-service"
         dapr.io/app-port: "80"
+        dapr.io/config: "appconfig"
+        dapr.io/log-as-json: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/"
     spec:
       containers:
         - name: fpm
@@ -24,6 +29,11 @@ spec:
           ports:
             - containerPort: 9000
           imagePullPolicy: Always
+          env:
+            - name: AUTH_EXPIRATION_TIME
+              value: "300"
+            - name: AUTH_MAX_RETRIES
+              value: "2"
         - name: caddy
           image: withinboredom/magic-auth-caddy:0.1.0
           ports:
